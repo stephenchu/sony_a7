@@ -35,6 +35,13 @@ parse_folder_name() {
   printf "%s|" "$folder_number" "${year}_${mm}_${dd}"
 }
 
+find_similarly_named_destination_folder() {
+  local date_string="$1"
+  if ls -dA "${MY_PICTURES}"/${date_string}* &> /dev/null; then
+    echo -n "$(ls -dA "${MY_PICTURES}"/${date_string}* 2>/dev/null)/RAW"
+  fi
+}
+
 mkdir_destination_folder() {
   local date_string="$1"
   local folder="${MY_PICTURES}/${date_string}/RAW"
@@ -67,7 +74,12 @@ download_pictures() {
     local folder_number=$(echo "$result" | cut -d '|' -f 1)
     local date_string=$(echo "$result" | cut -d '|' -f 2)
 
-    local destination=$(mkdir_destination_folder "$date_string")
+    local destination="";
+    if [ ! "$(find_similarly_named_destination_folder "$date_string")" = "" ]; then
+      destination=$(find_similarly_named_destination_folder "$date_string")
+    else
+      destination=$(mkdir_destination_folder "$date_string")
+    fi
 
     copy_files "$source" "$destination"
 
