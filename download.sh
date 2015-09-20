@@ -58,7 +58,7 @@ copy_files() {
 
 backdate_folder() {
   local folder="$1"
-  touch -r $(find "$folder" -type f -print -quit) "${folder%/RAW}"
+  touch -r "$(find "$folder" -type f -print -quit)" "${folder%/RAW}"
 }
 
 download_pictures() {
