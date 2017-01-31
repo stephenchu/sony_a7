@@ -4,6 +4,7 @@ set -o errexit
 set -o nounset
 
 USAGE=$(cat <<-"EOS"
+
   Usage:
 
     ./download.sh <SD_CARD_VOLUME> [ <DESTINATION> ]
@@ -14,7 +15,7 @@ USAGE=$(cat <<-"EOS"
 EOS
 )
 
-VOLUME="${1?$USAGE}"
+VOLUME="${1?"$USAGE"}"
 MY_PICTURES="${2:-"${HOME}/Pictures"}"
 
 is_empty_folder() {
